@@ -1,4 +1,5 @@
 const puppeteer = require('puppeteer');
+const fs = require('fs')
 
 // async function run() {
 //     const browser = await puppeteer.launch();
@@ -51,26 +52,15 @@ async function articles() {
 ))
 console.log(article);
 
+// save data to JSON file
+fs.writeFile('courses.json', JSON.stringify(article), (err) => {
+    if(err) throw err;
+    console.log('file saved');
+})
+
 await browser.close()
 }
 
 articles();
 
-async function run() {
-    const browser = await puppeteer.launch()
-    const page = await browser.newPage()
-    await page.goto('https://in.linkedin.com/');
 
-    const articles = await page.evaluate(() => Array.from(document.querySelectorAll('.explore-content-hub .w-full ul'), 
-        (e) => ({
-            name: e.querySelector('li a').innerText
-        })
-))
-
-
-console.log(articles);
-
-await browser.close()
-}
-
-run();
